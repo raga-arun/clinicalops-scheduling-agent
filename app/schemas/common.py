@@ -1,18 +1,18 @@
 """Shared response envelopes."""
 
-from pydantic import BaseModel
+from app.schemas.base import Model
 
 
-class ErrorDetail(BaseModel):
+class ErrorDetail(Model):
     code: str
     message: str
 
 
-class ErrorResponse(BaseModel):
+class ErrorResponse(Model):
     error: ErrorDetail
 
 
-class HealthResponse(BaseModel):
+class HealthResponse(Model):
     status: str = "ok"
     service: str
     version: str

@@ -1,16 +1,16 @@
 """Scheduling request/response schemas."""
 
-from pydantic import BaseModel
+from app.schemas.base import Model
 
 
-class SlotSearchRequest(BaseModel):
+class SlotSearchRequest(Model):
     practitioner_id: str | None = None
     specialty: str | None = None
     start: str
     end: str
 
 
-class Slot(BaseModel):
+class Slot(Model):
     slot_id: str
     practitioner_id: str
     start: str
@@ -18,13 +18,13 @@ class Slot(BaseModel):
     status: str
 
 
-class BookingRequest(BaseModel):
+class BookingRequest(Model):
     slot_id: str
     patient_id: str
     reason: str | None = None
 
 
-class Appointment(BaseModel):
+class Appointment(Model):
     appointment_id: str
     slot_id: str
     patient_id: str

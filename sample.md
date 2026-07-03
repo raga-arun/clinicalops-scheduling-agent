@@ -1,7 +1,9 @@
 # Standard Response Formats
 
 Conventions used by the ClinicalOps Scheduling Agent API. All responses are
-JSON. The `X-Request-ID` header is echoed on every response for tracing.
+JSON. Field names are **camelCase** on the wire (models use a `snake_case` →
+`camelCase` alias generator); requests accept either form. The `X-Request-ID`
+header is echoed on every response for tracing.
 
 ## Simple response
 
@@ -10,9 +12,9 @@ outer envelope.
 
 ```json
 {
-  "appointment_id": "appt_9f2c1a",
-  "slot_id": "slot_4471",
-  "patient_id": "pat_00817",
+  "appointmentId": "appt_9f2c1a",
+  "slotId": "slot_4471",
+  "patientId": "pat_00817",
   "status": "booked"
 }
 ```
@@ -55,15 +57,15 @@ List endpoints return items under `data` alongside a `pagination` block.
 {
   "data": [
     {
-      "slot_id": "slot_4471",
-      "practitioner_id": "prac_221",
+      "slotId": "slot_4471",
+      "practitionerId": "prac_221",
       "start": "2026-07-10T09:00:00Z",
       "end": "2026-07-10T09:30:00Z",
       "status": "free"
     },
     {
-      "slot_id": "slot_4472",
-      "practitioner_id": "prac_221",
+      "slotId": "slot_4472",
+      "practitionerId": "prac_221",
       "start": "2026-07-10T09:30:00Z",
       "end": "2026-07-10T10:00:00Z",
       "status": "free"
@@ -71,11 +73,11 @@ List endpoints return items under `data` alongside a `pagination` block.
   ],
   "pagination": {
     "page": 1,
-    "page_size": 20,
-    "total_items": 57,
-    "total_pages": 3,
-    "has_next": true,
-    "has_previous": false
+    "pageSize": 20,
+    "totalItems": 57,
+    "totalPages": 3,
+    "hasNext": true,
+    "hasPrevious": false
   }
 }
 ```
