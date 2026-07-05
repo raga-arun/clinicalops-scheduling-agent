@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.api.v1.router import api_router
+from app.clients.provider import ClientProvider
 from app.clients.registry import ClientRegistry
 from app.core.config import get_settings
 from app.core.exceptions import register_exception_handlers
@@ -19,11 +20,12 @@ async def lifespan(app: FastAPI):
     configure_logging(settings)
     registry = ClientRegistry(settings)
     await registry.startup()
-    app.state.clients = registry
+    ClientProvider.set(registry)
     try:
         yield
     finally:
         await registry.shutdown()
+        ClientProvider.reset()
 
 
 def create_app() -> FastAPI:

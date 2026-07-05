@@ -2,17 +2,18 @@
 
 import uuid
 
-from app.clients.registry import ClientRegistry
 from app.schemas.chat import ChatRequest, ChatResponse
+from app.services.base import BaseService
 from app.services.nlu.intents import Intent
 from app.services.nlu.llm import NLUEngine
 from app.services.scheduling_service import SchedulingService
 
 
-class ChatService:
-    def __init__(self, clients: ClientRegistry):
+class ChatService(BaseService):
+    def __init__(self) -> None:
+        super().__init__()
         self._nlu = NLUEngine()
-        self._scheduling = SchedulingService(clients)
+        self._scheduling = SchedulingService()
 
     async def handle(self, req: ChatRequest) -> ChatResponse:
         session_id = req.session_id or uuid.uuid4().hex
