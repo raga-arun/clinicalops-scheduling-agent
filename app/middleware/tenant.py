@@ -6,6 +6,7 @@ from starlette.responses import JSONResponse, Response
 
 from app.core.config import get_settings
 from app.core.context import TenantContext, set_tenant
+from app.core.envelope import error_payload
 
 _TENANT_EXEMPT_PREFIXES = ("/health", "/docs", "/openapi.json", "/redoc")
 
@@ -23,12 +24,12 @@ class TenantMiddleware(BaseHTTPMiddleware):
         if not tenant_id and settings.require_tenant:
             return JSONResponse(
                 status_code=400,
-                content={
-                    "error": {
-                        "code": "missing_tenant",
-                        "message": f"Missing required header: {settings.tenant_header}",
-                    }
-                },
+                content=error_payload(
+                    status_code=400,
+                    message=f"Missing required header: {settings.tenant_header}",
+                    error_code="MISSING_TENANT",
+                    path=path,
+                ),
             )
 
         if tenant_id:

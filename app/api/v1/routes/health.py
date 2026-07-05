@@ -1,11 +1,10 @@
 """Liveness and readiness endpoints."""
 
-from fastapi import APIRouter
-
+from app.api.route import create_router
 from app.core.config import get_settings
 from app.schemas.common import HealthResponse
 
-router = APIRouter()
+router = create_router()
 
 
 @router.get("/health", response_model=HealthResponse)

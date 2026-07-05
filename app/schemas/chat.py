@@ -5,6 +5,7 @@ from typing import Any, Literal
 from pydantic import Field
 
 from app.schemas.base import Model
+from app.schemas.common import SuccessResponse
 
 
 class ChatMessage(Model):
@@ -23,3 +24,17 @@ class ChatResponse(Model):
     reply: str
     intent: str | None = None
     data: dict[str, Any] | None = None
+
+
+class UiDirectives(Model):
+    show_selections: bool = False
+    show_calendly: bool = False
+    show_rating: bool = False
+    show_reason_for_visit: bool = False
+    show_insurance_upload: bool = False
+
+
+class ChatEnvelope(SuccessResponse[ChatResponse]):
+    """Chat success envelope with a root-level ``ui_directives`` sibling of ``data``."""
+
+    ui_directives: UiDirectives = Field(default_factory=UiDirectives)

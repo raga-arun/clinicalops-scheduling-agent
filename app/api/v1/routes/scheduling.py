@@ -1,13 +1,14 @@
 """Structured scheduling endpoints."""
 
-from fastapi import APIRouter, Depends
+from fastapi import Depends
 
 from app.api.deps import get_current_tenant, get_scheduling_service
+from app.api.route import create_router
 from app.core.context import TenantContext
 from app.schemas.scheduling import Appointment, BookingRequest, Slot, SlotSearchRequest
 from app.services.scheduling_service import SchedulingService
 
-router = APIRouter()
+router = create_router()
 
 
 @router.post("/slots/search", response_model=list[Slot])
