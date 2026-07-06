@@ -8,6 +8,7 @@ from app.api.v1.routes import (
     chat,
     doctor_clinic,
     health,
+    insurance,
     patient,
     slots,
 )
@@ -19,4 +20,5 @@ api_router.include_router(address.router, tags=["address"])
 api_router.include_router(slots.router, tags=["slots"])
 api_router.include_router(patient.router, tags=["patient"])
 api_router.include_router(appointment.router, tags=["appointment"])
+api_router.include_router(insurance.router, tags=["insurance"])
 api_router.include_router(chat.router, prefix="/chat", tags=["chat"])
