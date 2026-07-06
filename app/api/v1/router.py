@@ -2,12 +2,21 @@
 
 from fastapi import APIRouter
 
-from app.api.v1.routes import address, chat, doctor_clinic, health, scheduling, slots
+from app.api.v1.routes import (
+    address,
+    appointment,
+    chat,
+    doctor_clinic,
+    health,
+    patient,
+    slots,
+)
 
 api_router = APIRouter()
 api_router.include_router(health.router, tags=["health"])
 api_router.include_router(doctor_clinic.router, tags=["doctor-clinic"])
 api_router.include_router(address.router, tags=["address"])
 api_router.include_router(slots.router, tags=["slots"])
+api_router.include_router(patient.router, tags=["patient"])
+api_router.include_router(appointment.router, tags=["appointment"])
 api_router.include_router(chat.router, prefix="/chat", tags=["chat"])
-api_router.include_router(scheduling.router, prefix="/scheduling", tags=["scheduling"])

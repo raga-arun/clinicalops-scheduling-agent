@@ -2,6 +2,7 @@
 
 import httpx
 
+from app.clients.internal.appointment import Appointments
 from app.clients.internal.doctor_clinic import DoctorClinic
 from app.clients.internal.patient import Patient
 from app.clients.internal.scheduling import Scheduling
@@ -15,6 +16,7 @@ class InternalAPIClients(ManagedClient):
         self._client: httpx.AsyncClient | None = None
         self.scheduling: Scheduling
         self.patient: Patient
+        self.appointment: Appointments
         self.doctor_clinic: DoctorClinic
 
     async def startup(self) -> None:
@@ -29,6 +31,7 @@ class InternalAPIClients(ManagedClient):
         )
         self.scheduling = Scheduling(self._client, service_name="scheduling")
         self.patient = Patient(self._client, service_name="patient")
+        self.appointment = Appointments(self._client, service_name="scheduling")
         self.doctor_clinic = DoctorClinic(self._client, service_name="common")
 
     async def shutdown(self) -> None:

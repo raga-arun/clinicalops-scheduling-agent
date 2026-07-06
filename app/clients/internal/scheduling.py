@@ -1,4 +1,4 @@
-"""Client for the internal Scheduling module of the ClinicalOps API."""
+"""Client for the internal Scheduling slots (Common module) of the ClinicalOps API."""
 
 from typing import Any
 
@@ -50,12 +50,3 @@ class Scheduling(BaseInternalClient):
             "sort": "date,ASC",
         }
         return _as_list(await self.get("/api/v1/common/slots/live-slots", params=params))
-
-    async def create_appointment(self, payload: dict[str, Any]) -> dict[str, Any]:
-        return await self.post("/api/v1/schedule/appointments", json=payload)
-
-    async def cancel_appointment(self, appointment_id: str) -> dict[str, Any]:
-        return await self.post(f"/api/v1/schedule/appointments/{appointment_id}/cancel")
-
-    async def get_appointment(self, appointment_id: str) -> dict[str, Any]:
-        return await self.get(f"/api/v1/schedule/appointments/{appointment_id}")
