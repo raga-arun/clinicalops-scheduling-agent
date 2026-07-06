@@ -7,16 +7,32 @@ def test_health_success_envelope(client):
     assert body["data"]["status"] == "ok"
 
 
-def test_chat_success_envelope(client, tenant_headers):
+def _stub_chat(monkeypatch, *, session_id="sess-1", reply="Hi there!"):
+    """Replace ChatService.handle so envelope tests avoid the live Gemini agent."""
+    from app.schemas.chat import ChatResponse, UiDirectives
+    from app.services.chat_service import ChatResult, ChatService
+
+    async def fake_handle(self, req):
+        return ChatResult(
+            response=ChatResponse(session_id=session_id, reply=reply),
+            ui_directives=UiDirectives(),
+        )
+
+    monkeypatch.setattr(ChatService, "handle", fake_handle)
+
+
+def test_chat_success_envelope(client, tenant_headers, monkeypatch):
+    _stub_chat(monkeypatch)
     resp = client.post("/api/v1/chat", json={"message": "hi"}, headers=tenant_headers)
     assert resp.status_code == 200
     body = resp.json()
     assert body["status"] == "success"
-    assert body["data"]["intent"] == "unknown"
-    assert "sessionId" in body["data"]
+    assert body["data"]["reply"] == "Hi there!"
+    assert body["data"]["sessionId"] == "sess-1"
 
 
-def test_chat_root_level_ui_directives(client, tenant_headers):
+def test_chat_root_level_ui_directives(client, tenant_headers, monkeypatch):
+    _stub_chat(monkeypatch)
     resp = client.post("/api/v1/chat", json={"message": "hi"}, headers=tenant_headers)
     assert resp.status_code == 200
     body = resp.json()
