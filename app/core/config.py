@@ -31,6 +31,13 @@ class RedisSettings(BaseSettings):
     timeout_seconds: float = 5.0
 
 
+class PlacesSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="PLACES_", extra="ignore")
+
+    base_url: str = "http://places-api.internal"
+    timeout_seconds: float = 10.0
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -55,6 +62,7 @@ class Settings(BaseSettings):
     internal: InternalAPISettings = Field(default_factory=InternalAPISettings)
     vault: VaultSettings = Field(default_factory=VaultSettings)
     redis: RedisSettings = Field(default_factory=RedisSettings)
+    places: PlacesSettings = Field(default_factory=PlacesSettings)
 
 
 @lru_cache
