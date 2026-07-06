@@ -11,6 +11,7 @@ from app.api.v1.routes import (
     insurance,
     patient,
     slots,
+    verification,
     webhook,
 )
 
@@ -23,4 +24,5 @@ api_router.include_router(patient.router, tags=["patient"])
 api_router.include_router(appointment.router, tags=["appointment"])
 api_router.include_router(insurance.router, tags=["insurance"])
 api_router.include_router(webhook.router, tags=["webhook"])
+api_router.include_router(verification.router, tags=["verification"])
 api_router.include_router(chat.router, prefix="/chat", tags=["chat"])

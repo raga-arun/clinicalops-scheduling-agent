@@ -1,6 +1,7 @@
 """Top-level registry composing every client group behind one lifecycle."""
 
 from app.clients.external.places import Places
+from app.clients.external.verification import Verification
 from app.clients.internal.group import InternalAPIClients
 from app.clients.lifecycle import ManagedClient
 from app.clients.redis.redis_client import RedisClient
@@ -14,7 +15,14 @@ class ClientRegistry:
         self.vault = VaultClient(settings)
         self.redis = RedisClient(settings)
         self.places = Places(settings)
-        self._managed: list[ManagedClient] = [self.internal, self.vault, self.redis, self.places]
+        self.verification = Verification(settings)
+        self._managed: list[ManagedClient] = [
+            self.internal,
+            self.vault,
+            self.redis,
+            self.places,
+            self.verification,
+        ]
 
     async def startup(self) -> None:
         for client in self._managed:

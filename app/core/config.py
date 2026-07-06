@@ -38,6 +38,13 @@ class PlacesSettings(BaseSettings):
     timeout_seconds: float = 10.0
 
 
+class VerificationSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="VERIFICATION_", extra="ignore")
+
+    base_url: str = "http://verification-api.internal"
+    timeout_seconds: float = 10.0
+
+
 class AgentSettings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="AGENT_", extra="ignore")
 
@@ -71,6 +78,7 @@ class Settings(BaseSettings):
     vault: VaultSettings = Field(default_factory=VaultSettings)
     redis: RedisSettings = Field(default_factory=RedisSettings)
     places: PlacesSettings = Field(default_factory=PlacesSettings)
+    verification: VerificationSettings = Field(default_factory=VerificationSettings)
     agent: AgentSettings = Field(default_factory=AgentSettings)
 
 
