@@ -9,9 +9,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class InternalAPISettings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="INTERNAL_", extra="ignore")
 
-    scheduling_base_url: str = "http://scheduling-api.internal"
-    patient_base_url: str = "http://patient-api.internal"
-    availability_base_url: str = "http://availability-api.internal"
+    api_url: str = "http://clinicalops-api.internal"
 
     timeout_seconds: float = 15.0
     max_connections: int = 100
@@ -42,6 +40,7 @@ class Settings(BaseSettings):
 
     service_name: str = "clinicalops-scheduling-agent"
     service_version: str = "0.1.0"
+    agent_type: str = "scheduling-chat-agent"
     environment: str = Field(default="local")
     log_level: str = "INFO"
 
