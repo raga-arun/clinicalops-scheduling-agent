@@ -59,7 +59,10 @@ class BaseInternalClient:
 
         if not response.content:
             return None
-        return response.json()
+        body = response.json()
+        if isinstance(body, dict) and "status" in body and "data" in body:
+            return body["data"]
+        return body
 
     async def get(self, path: str, **kwargs: Any) -> Any:
         return await self.request("GET", path, **kwargs)
