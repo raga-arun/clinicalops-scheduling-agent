@@ -21,9 +21,12 @@ async def lifespan(app: FastAPI):
     registry = ClientRegistry(settings)
     await registry.startup()
     ClientProvider.set(registry)
+    # TODO: build the shared ADK agent runner once ADK is implemented:
+    #   AgentProvider.build()
     try:
         yield
     finally:
+        # TODO: AgentProvider.reset()
         await registry.shutdown()
         ClientProvider.reset()
 

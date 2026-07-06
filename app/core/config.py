@@ -50,7 +50,7 @@ class Settings(BaseSettings):
     openapi_url: str | None = "/openapi.json"
 
     tenant_header: str = "X-Tenant-ID"
-    request_id_header: str = "X-Request-ID"
+    trace_id_header: str = "X-Trace-ID"
     require_tenant: bool = True
 
     internal: InternalAPISettings = Field(default_factory=InternalAPISettings)
