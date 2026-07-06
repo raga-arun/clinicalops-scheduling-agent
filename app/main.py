@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from app.agents.provider import AgentProvider
 from app.api.v1.router import api_router
 from app.clients.provider import ClientProvider
 from app.clients.registry import ClientRegistry
@@ -21,12 +22,11 @@ async def lifespan(app: FastAPI):
     registry = ClientRegistry(settings)
     await registry.startup()
     ClientProvider.set(registry)
-    # TODO: build the shared ADK agent runner once ADK is implemented:
-    #   AgentProvider.build()
+    AgentProvider.build()
     try:
         yield
     finally:
-        # TODO: AgentProvider.reset()
+        AgentProvider.reset()
         await registry.shutdown()
         ClientProvider.reset()
 

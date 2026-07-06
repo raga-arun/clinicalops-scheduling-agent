@@ -38,6 +38,14 @@ class PlacesSettings(BaseSettings):
     timeout_seconds: float = 10.0
 
 
+class AgentSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="AGENT_", extra="ignore")
+
+    name: str = "Ava"
+    model: str = "gemini-2.0-flash"
+    max_output_tokens: int = 600
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -63,6 +71,7 @@ class Settings(BaseSettings):
     vault: VaultSettings = Field(default_factory=VaultSettings)
     redis: RedisSettings = Field(default_factory=RedisSettings)
     places: PlacesSettings = Field(default_factory=PlacesSettings)
+    agent: AgentSettings = Field(default_factory=AgentSettings)
 
 
 @lru_cache
