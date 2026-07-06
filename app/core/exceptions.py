@@ -35,6 +35,11 @@ class MissingTenantError(AppError):
     error_code = "MISSING_TENANT"
 
 
+class BadRequestError(AppError):
+    status_code = status.HTTP_400_BAD_REQUEST
+    error_code = "BAD_REQUEST"
+
+
 class InternalAPIError(AppError):
     status_code = status.HTTP_502_BAD_GATEWAY
     error_code = "INTERNAL_API_ERROR"
