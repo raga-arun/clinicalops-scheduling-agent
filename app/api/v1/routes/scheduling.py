@@ -1,15 +1,10 @@
 """Structured scheduling endpoints."""
 
 from app.api.route import create_router
-from app.schemas.scheduling import Appointment, BookingRequest, Slot, SlotSearchRequest
+from app.schemas.scheduling import Appointment, BookingRequest
 from app.services.scheduling_service import SchedulingService
 
 router = create_router()
-
-
-@router.post("/slots/search", response_model=list[Slot])
-async def search_slots(payload: SlotSearchRequest) -> list[Slot]:
-    return await SchedulingService().find_slots(payload)
 
 
 @router.post("/appointments", response_model=Appointment)
