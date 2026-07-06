@@ -19,7 +19,7 @@ class BaseInternalClient:
 
     def _context_headers(self) -> dict[str, str]:
         settings = get_settings()
-        headers: dict[str, str] = {}
+        headers: dict[str, str] = {"X-Agent-Type": settings.agent_type}
         tenant = get_tenant()
         if tenant:
             headers[settings.tenant_header] = tenant.tenant_id
