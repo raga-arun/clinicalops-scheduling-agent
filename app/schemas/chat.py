@@ -26,6 +26,11 @@ class ChatResponse(Model):
     data: dict[str, Any] | None = None
 
 
+class ChatHistory(Model):
+    session_id: str
+    messages: list[ChatMessage] = Field(default_factory=list)
+
+
 class UiDirectives(Model):
     show_selections: bool = False
     show_calendly: bool = False

@@ -5,7 +5,7 @@ from typing import Any
 import httpx
 
 from app.core.config import get_settings
-from app.core.context import get_request_id, get_tenant
+from app.core.context import get_tenant, get_trace_id
 from app.core.exceptions import InternalAPIError
 from app.core.logging import get_logger
 
@@ -19,13 +19,13 @@ class BaseInternalClient:
 
     def _context_headers(self) -> dict[str, str]:
         settings = get_settings()
-        headers: dict[str, str] = {}
+        headers: dict[str, str] = {"X-Agent-Type": settings.agent_type}
         tenant = get_tenant()
         if tenant:
             headers[settings.tenant_header] = tenant.tenant_id
-        request_id = get_request_id()
-        if request_id:
-            headers[settings.request_id_header] = request_id
+        trace_id = get_trace_id()
+        if trace_id:
+            headers[settings.trace_id_header] = trace_id
         return headers
 
     async def request(
@@ -59,7 +59,10 @@ class BaseInternalClient:
 
         if not response.content:
             return None
-        return response.json()
+        body = response.json()
+        if isinstance(body, dict) and "status" in body and "data" in body:
+            return body["data"]
+        return body
 
     async def get(self, path: str, **kwargs: Any) -> Any:
         return await self.request("GET", path, **kwargs)

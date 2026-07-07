@@ -1,4 +1,4 @@
-"""Request-scoped tenant and request-id context via contextvars."""
+"""Request-scoped tenant and trace-id context via contextvars."""
 
 from contextvars import ContextVar
 from dataclasses import dataclass
@@ -10,7 +10,7 @@ class TenantContext:
 
 
 _tenant_ctx: ContextVar[TenantContext | None] = ContextVar("tenant_ctx", default=None)
-_request_id_ctx: ContextVar[str | None] = ContextVar("request_id_ctx", default=None)
+_trace_id_ctx: ContextVar[str | None] = ContextVar("trace_id_ctx", default=None)
 
 
 def set_tenant(ctx: TenantContext) -> None:
@@ -28,9 +28,9 @@ def require_tenant() -> TenantContext:
     return ctx
 
 
-def set_request_id(request_id: str) -> None:
-    _request_id_ctx.set(request_id)
+def set_trace_id(trace_id: str) -> None:
+    _trace_id_ctx.set(trace_id)
 
 
-def get_request_id() -> str | None:
-    return _request_id_ctx.get()
+def get_trace_id() -> str | None:
+    return _trace_id_ctx.get()

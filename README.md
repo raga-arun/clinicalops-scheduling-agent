@@ -20,15 +20,15 @@ API Gateway ──(X-Tenant-ID header)──▶  this service  ──▶  Intern
 - **No direct FHIR / DB access** — only internal-API base URLs are configured
   (see [app/core/config.py](app/core/config.py)).
 - **Internal API clients** — [BaseInternalClient](app/clients/base.py) forwards
-  tenant + request id and normalizes errors; one client per internal service.
+  tenant + trace id and normalizes errors; one client per internal service.
 
 ## Layout
 
 ```
 app/
   main.py                 # app factory, middleware wiring, lifespan (client pool)
-  core/                   # config, context (tenant/request-id), logging, exceptions
-  middleware/             # tenant extraction, request-id correlation
+  core/                   # config, context (tenant/trace-id), logging, exceptions
+  middleware/             # tenant extraction, trace-id correlation
   api/
     deps.py               # DI: clients, services, tenant guard
     v1/router.py          # v1 aggregate router

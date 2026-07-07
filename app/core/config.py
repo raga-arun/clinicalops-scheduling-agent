@@ -9,9 +9,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class InternalAPISettings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="INTERNAL_", extra="ignore")
 
-    scheduling_base_url: str = "http://scheduling-api.internal"
-    patient_base_url: str = "http://patient-api.internal"
-    availability_base_url: str = "http://availability-api.internal"
+    api_url: str = "http://clinicalops-api.internal"
 
     timeout_seconds: float = 15.0
     max_connections: int = 100
@@ -33,6 +31,28 @@ class RedisSettings(BaseSettings):
     timeout_seconds: float = 5.0
 
 
+class ExternalServiceSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="EXTERNAL_SERVICE_", extra="ignore")
+
+    base_url: str = "http://places-api.internal"
+    timeout_seconds: float = 10.0
+
+
+class VerificationSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="VERIFICATION_", extra="ignore")
+
+    base_url: str = "http://verification-api.internal"
+    timeout_seconds: float = 10.0
+
+
+class AgentSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="AGENT_", extra="ignore")
+
+    name: str = "Ava"
+    model: str = "gemini-2.0-flash"
+    max_output_tokens: int = 600
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -42,6 +62,7 @@ class Settings(BaseSettings):
 
     service_name: str = "clinicalops-scheduling-agent"
     service_version: str = "0.1.0"
+    agent_type: str = "scheduling-chat-agent"
     environment: str = Field(default="local")
     log_level: str = "INFO"
 
@@ -50,12 +71,15 @@ class Settings(BaseSettings):
     openapi_url: str | None = "/openapi.json"
 
     tenant_header: str = "X-Tenant-ID"
-    request_id_header: str = "X-Request-ID"
+    trace_id_header: str = "X-Trace-ID"
     require_tenant: bool = True
 
     internal: InternalAPISettings = Field(default_factory=InternalAPISettings)
     vault: VaultSettings = Field(default_factory=VaultSettings)
     redis: RedisSettings = Field(default_factory=RedisSettings)
+    external_service: ExternalServiceSettings = Field(default_factory=ExternalServiceSettings)
+    verification: VerificationSettings = Field(default_factory=VerificationSettings)
+    agent: AgentSettings = Field(default_factory=AgentSettings)
 
 
 @lru_cache
