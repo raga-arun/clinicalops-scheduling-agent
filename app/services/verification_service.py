@@ -17,7 +17,7 @@ logger = get_logger(__name__)
 class VerificationService(BaseService):
     async def start(self, req: PhoneVerificationStart) -> dict[str, Any]:
         logger.info("Phone verification start session=%s channel=%s", req.session_id, req.channel)
-        return await self._clients.verification.start(
+        return await self._clients.external.verification.start(
             session_id=req.session_id,
             channel=req.channel,
             force_resend=req.force_resend,
@@ -25,12 +25,12 @@ class VerificationService(BaseService):
 
     async def confirm(self, req: PhoneVerificationConfirm) -> dict[str, Any]:
         logger.info("Phone verification confirm session=%s", req.session_id)
-        return await self._clients.verification.confirm(
+        return await self._clients.external.verification.confirm(
             session_id=req.session_id, code=req.code
         )
 
     async def update(self, req: PhoneUpdate) -> dict[str, Any]:
         logger.info("Phone number update session=%s", req.session_id)
-        return await self._clients.verification.update(
+        return await self._clients.external.verification.update(
             session_id=req.session_id, new_phone_number=req.new_phone_number
         )

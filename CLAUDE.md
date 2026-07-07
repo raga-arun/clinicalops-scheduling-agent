@@ -52,7 +52,7 @@ Four cross-cutting mechanisms carry most of the design and span multiple files:
   (`internal`, `vault`, `redis`), each a [ManagedClient](app/clients/lifecycle.py)
   with `startup()`/`shutdown()`. Built once in the [app lifespan](app/main.py) and
   published via the [ClientProvider](app/clients/provider.py) singleton.
-- [InternalAPIClients](app/clients/internal/group.py) owns pooled `httpx.AsyncClient`
+- [InternalAPIClients](app/clients/internal/client.py) owns pooled `httpx.AsyncClient`
   instances (one per internal service). Services reach everything through
   [BaseService](app/services/base.py) → `ClientProvider.get()`; they never construct clients.
 
@@ -96,7 +96,7 @@ accessed via the `lru_cache`d `get_settings()`.
 ## Adding capabilities
 
 - **New internal dependency:** add a client in [app/clients/internal/](app/clients/internal/),
-  wire its pool in [group.py](app/clients/internal/group.py), add its base URL to
+  wire its pool in [client.py](app/clients/internal/client.py), add its base URL to
   `InternalAPISettings` in [config.py](app/core/config.py) and to `.env.example`.
 - **New endpoint:** create the router with `create_router()`, include it in
   [app/api/v1/router.py](app/api/v1/router.py).

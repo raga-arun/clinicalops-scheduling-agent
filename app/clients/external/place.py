@@ -18,9 +18,9 @@ from app.core.logging import get_logger
 logger = get_logger(__name__)
 
 
-class Places(ManagedClient):
+class Place(ManagedClient):
     def __init__(self, settings: Settings):
-        self._settings = settings.places
+        self._settings = settings.external_service
         self._client: httpx.AsyncClient | None = None
 
     async def startup(self) -> None:
